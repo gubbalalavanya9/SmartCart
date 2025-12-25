@@ -1,33 +1,88 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>SmartCart</title>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartCart | Premium Collection</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 </head>
 <body>
+    <nav class="navbar">
+        <div class="nav-left">
+            <h1 class="logo">Smart<span>Cart</span></h1>
+        </div>
+        
+        <div class="search-container">
+            <input type="text" id="p-search" placeholder="Search products..." onkeyup="handleSearch()">
+        </div>
 
-<div class="navbar">
-  <h1>🛍 SmartCart</h1>
-  <div class="cart">🛒 <span id="cart-count">0</span></div>
-</div>
+        <div class="nav-right">
+            <button class="ghost-btn" onclick="toggleOrders()">My Orders</button>
+            <div class="cart-btn" onclick="toggleCart()">
+                🛒 <span id="cart-count">0</span>
+            </div>
+        </div>
+    </nav>
 
-<div class="products">
-  <div class="product">
-    <img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30">
-    <h3>Smart Watch</h3>
-    <p>₹1999</p>
-    <button onclick="addToCart()">Add to Cart</button>
-  </div>
+    <header class="hero">
+        <div class="category-pills">
+            <button class="cat-pill active" onclick="filterByCategory('All', this)">All</button>
+            <button class="cat-pill" onclick="filterByCategory('Electronics', this)">Electronics</button>
+            <button class="cat-pill" onclick="filterByCategory('Audio', this)">Audio</button>
+            <button class="cat-pill" onclick="filterByCategory('Baby Wear', this)">Baby Wear</button>
+            <button class="cat-pill" onclick="filterByCategory('Stationary', this)">Stationary</button>
+        </div>
+    </header>
 
-  <div class="product">
-    <img src="https://images.unsplash.com/photo-1518441984349-2f8efb4a0d0b">
-    <h3>Wireless Earbuds</h3>
-    <p>₹1499</p>
-    <button onclick="addToCart()">Add to Cart</button>
-  </div>
-</div>
+    <main id="product-grid" class="product-grid"></main>
 
-<script src="script.js"></script>
+    <div id="overlay" class="overlay" onclick="closeAll()"></div>
+
+    <div id="cart-drawer" class="drawer">
+        <div class="drawer-header">
+            <h3>Your Bag</h3>
+            <button class="close-btn" onclick="toggleCart()">&times;</button>
+        </div>
+        <div id="cart-list" class="drawer-content"></div>
+        <div class="drawer-footer">
+            <div class="total-row">Grand Total: <span id="cart-total">₹0</span></div>
+            <button class="checkout-btn" onclick="handleCheckout()">Checkout All</button>
+        </div>
+    </div>
+
+    <div id="orders-drawer" class="drawer">
+        <div class="drawer-header">
+            <h3>Order History</h3>
+            <button class="close-btn" onclick="toggleOrders()">&times;</button>
+        </div>
+        <div id="orders-list" class="drawer-content"></div>
+    </div>
+
+    <div id="buy-modal" class="modal-overlay">
+        <div class="modal-content">
+            <button class="close-modal" onclick="closeBuyModal()">&times;</button>
+            <div class="modal-body">
+                <img id="buy-img" src="" alt="">
+                <div class="buy-info">
+                    <h2 id="buy-title"></h2>
+                    <p id="buy-price-unit" class="price-tag"></p>
+                    <div class="qty-box">
+                        <label>Quantity:</label>
+                        <select id="buy-qty" onchange="updateBuyTotal()">
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                        </select>
+                    </div>
+                    <p class="total-line">Total: <span id="buy-total"></span></p>
+                    <button class="confirm-btn" onclick="confirmPurchase()">Confirm Purchase</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
 </body>
 </html>
